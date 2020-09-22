@@ -6,6 +6,14 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      localstack:
+        image: localstack/localstack:0.11.5
+        env:
+          SERVICES: dynamodb
+          DEFAULT_REGION: ap-northeast-1
+        ports:
+          - 4566:4566
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -13,5 +21,16 @@ jobs:
           go-version: 1.x
       - name: Download Dependencies
         run: go mod download
+      - name: Download AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+      - name: Setup AWS Config
+        run: |
+          aws configure set aws_access_key_id dummy     --profile local
+          aws configure set aws_secret_access_key dummy --profile local
+          aws configure set region ap-northeast-1       --profile local
+          aws configure set cli_pager ""                --profile local
       - name: Test
         run: make test

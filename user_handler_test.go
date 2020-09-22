@@ -6,10 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/d-tsuji/example/gen/models"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/d-tsuji/example/gen/models"
 	"github.com/d-tsuji/example/gen/restapi/operations"
 	"github.com/go-openapi/runtime"
 	"github.com/guregu/dynamo"
