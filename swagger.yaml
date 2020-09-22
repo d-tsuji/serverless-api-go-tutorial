@@ -1,0 +1,88 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Example app"
+  description: "A Example app for serverless api"
+host: "localhost:18888"
+basePath: "/v1"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+tags:
+  - name: user
+    description: ユーザAPI
+paths:
+  /users:
+    get:
+      summary: ユーザ一覧取得
+      operationId: getUsers
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/users'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: ユーザ登録
+      operationId: postUsers
+      parameters:
+        - in: body
+          name: postUsers
+          required: true
+          schema:
+            $ref: '#/definitions/user'
+          description: 登録するユーザ情報
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/user'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  users:
+    title: users
+    type: array
+    description: ユーザ一覧
+    items:
+      $ref: '#/definitions/user'
+  user:
+    title: User
+    type: object
+    description: ユーザ
+    properties:
+      user_id:
+        type: string
+        x-omitempty: false
+        description: ユーザID
+      name:
+        type: string
+        x-omitempty: false
+        description: ユーザ名
+    required:
+      - user_id
+      - name
+  Error:
+    title: Error
+    type: object
+    description: エラー
+    properties:
+      message:
+        type: string
+        description: エラーメッセージ
